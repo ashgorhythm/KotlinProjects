@@ -1,2 +1,4 @@
-true::Appear pending item tommorrow
-false::Removing task from project tommorow
+false::Buy a pen
+true::Complete pending item
+false::Adding search function
+false::adding edit function

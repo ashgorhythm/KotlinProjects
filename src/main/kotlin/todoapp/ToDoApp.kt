@@ -55,7 +55,7 @@ class TaskManager(private val filePath: String){
             return
         }
         for ((index,task) in tasks.withIndex()){
-            val statusSymbol = if (task.status) "[✔]" else "[.]"
+            val statusSymbol = if (task.status) "[✔]" else "[X]"
             println("$index . $statusSymbol ${task.title}")
         }
         println("Total: ${tasks.size}, Completed: ${tasks.count { it.status }}")
@@ -77,7 +77,62 @@ class TaskManager(private val filePath: String){
         saveTask() //save after marking done
         println("${task.title} is marked as done.")
     }
+    //removing task
+    fun removeTask(index: Int){
+        if (index < 0 || index >= tasks.size) {
+            println("Invalid task number.")
+            return
+        }
+        val removedTask = tasks[index]
+        tasks.removeAt(index)
+        saveTask()
+        println("${removedTask.title} is removed")
+    }
+    //mark as undone
+    fun markUndone(index: Int){
+        if (index < 0 || index >= tasks.size) {
+            println("Invalid task number.")
+            return
+        }
+        val task = tasks[index]
+        if (!task.status){
+            println("${task.title} is already undone.")
+            return
+        }
+        task.status = false
+        saveTask()
+        println("${task.title} is marked as undone")
+
+    }
+    //completed task list
+    fun completedList(){
+        val completed = tasks.filter { it.status }
+        if (completed.isEmpty()){
+            println("No completed task")
+            return
+        }
+        println("Completed task: ")
+        for ((index,task) in completed.withIndex()){
+            println("$index. [✔] ${task.title}")
+        }
+
+    }
+    //incompleted task list
+    fun incompletedList(){
+        val incompleted = tasks.filter { !it.status }
+        if (incompleted.isEmpty()){
+            println("No incompleted task")
+            return
+        }
+        println("Incompleted task: ")
+        for ((index,task) in incompleted.withIndex()){
+            println("$index. [X] ${task.title}")
+        }
+
+    }
+
 }
+
 
 /*
 //Creating file
@@ -96,7 +151,11 @@ fun main() {
         println("1. Add Task")
         println("2. List Tasks")
         println("3. Mark Task as Done")
-        println("4. Exit")
+        println("4. Remove Task")
+        println("5. Mark as Undone")
+        println("6. List Completed Tasks")
+        println("7. List Uncompleted Tasks")
+        println("8. Exit")
         print("Enter your choice: ")
 
         when(readLine()?.trim()){
@@ -120,6 +179,33 @@ fun main() {
                 else println("Invalid input")
             }
             "4" -> {
+                manager.listTask()
+                print("Enter the task number you want to remove: ")
+                val input = readLine()
+                val index = input?.toIntOrNull()
+                if (index!=null){
+                    manager.removeTask(index)
+                }
+                else println("Invalid input.")
+            }
+            "5" -> {
+                manager.listTask()
+                print("Enter task number to mark as undone: ")
+                val input = readLine()
+                val index = input?.toIntOrNull()
+                if (index != null){
+                    manager.markUndone(index)
+                }
+                else println("Invalid input")
+
+            }
+            "6" -> {
+               manager.completedList()
+            }
+            "7" -> {
+                manager.incompletedList()
+            }
+            "8" -> {
                 println("GoodBye")
                 break
             }
