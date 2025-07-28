@@ -1,4 +1,4 @@
 false::Buy a pen
 true::Complete pending item
-false::Adding search function
-false::adding edit function
+true::Adding search function
+true::CLI ToDo finished

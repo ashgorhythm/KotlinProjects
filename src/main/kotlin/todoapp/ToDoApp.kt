@@ -2,7 +2,7 @@ package todoapp
 
 import java.io.File
 
-data class Task(val title: String, var status: Boolean=false)
+data class Task(var title: String, var status: Boolean=false)
 
 class TaskManager(private val filePath: String){
     private val tasks = mutableListOf<Task>()
@@ -55,7 +55,7 @@ class TaskManager(private val filePath: String){
             return
         }
         for ((index,task) in tasks.withIndex()){
-            val statusSymbol = if (task.status) "[✔]" else "[X]"
+            val statusSymbol = if (task.status) "[✔]" else "[❌]"
             println("$index . $statusSymbol ${task.title}")
         }
         println("Total: ${tasks.size}, Completed: ${tasks.count { it.status }}")
@@ -130,8 +130,26 @@ class TaskManager(private val filePath: String){
         }
 
     }
+    //for searching a task
+    fun searchTask(keyword: String){
+        val result = tasks.filter { it.title.contains(keyword, ignoreCase = true) }
+        if (result.isEmpty()){
+            println("No task found with keyword $keyword")
+        }
+        else result.forEachIndexed { index, task -> println("$index. ${task.title}") }
+    }
+    //editing task
+    fun editTask(index: Int, newTitle: String){
+        if (index in tasks.indices){
+            tasks[index].title = newTitle
+            saveTask()
+            println("Title updated...")
+        }
+        else println("Invalid index")
+    }
 
 }
+
 
 
 /*
@@ -155,7 +173,9 @@ fun main() {
         println("5. Mark as Undone")
         println("6. List Completed Tasks")
         println("7. List Uncompleted Tasks")
-        println("8. Exit")
+        println("8. Search a Task")
+        println("9. Edit Task")
+        println("10. Exit")
         print("Enter your choice: ")
 
         when(readLine()?.trim()){
@@ -206,6 +226,25 @@ fun main() {
                 manager.incompletedList()
             }
             "8" -> {
+
+                print("Enter keyword: ")
+                val input = readLine()
+                if (input== null) println("Enter a valid keywork")
+                else manager.searchTask(input)
+            }
+            "9" -> {
+                manager.listTask()
+                print("Enter the number you want to edit:")
+                val index = readLine()?.toIntOrNull()
+                if (index!=null){
+                    print("Enter your task: ")
+                    val newTitle = readLine()?: ""
+                    manager.editTask(index,newTitle)
+                    println("Your edited task is $index. $newTitle")
+                }
+
+            }
+            "10" -> {
                 println("GoodBye")
                 break
             }
