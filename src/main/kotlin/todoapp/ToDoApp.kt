@@ -147,6 +147,11 @@ class TaskManager(private val filePath: String){
         }
         else println("Invalid index")
     }
+    //deleting all task
+    fun deleteAll(){
+        tasks.removeAll(tasks)
+        saveTask()
+    }
 
 }
 
@@ -175,7 +180,8 @@ fun main() {
         println("7. List Uncompleted Tasks")
         println("8. Search a Task")
         println("9. Edit Task")
-        println("10. Exit")
+        println("10. Delete all Task")
+        println("11. Exit")
         print("Enter your choice: ")
 
         when(readLine()?.trim()){
@@ -245,6 +251,9 @@ fun main() {
 
             }
             "10" -> {
+                manager.deleteAll()
+            }
+            "11" -> {
                 println("GoodBye")
                 break
             }
