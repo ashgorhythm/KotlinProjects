@@ -14,11 +14,14 @@ enum class TransactionType{INCOME, EXPENSE}
 enum class Category{FOOD,SALARY,TRAVEL,ENTERTAINMENT,OTHERS}
 
 @Serializable
+enum class BudgetPeriod{WEEKLY,MONTHLY,YEARLY}
+
+@Serializable
 data class Transaction(
     val id: String = UUID.randomUUID().toString(), //random uid generation
     val amount: Double,
     val description: String,
-    val date: String,
+    val date: String = LocalDate.now().toString(),
     val type: TransactionType,
     val category: Category
 )
@@ -46,6 +49,12 @@ data class Account(
       }
 }
 }
+@Serializable
+data class Budget(
+    val category: Category,
+    val limit: Double,
+    val period: BudgetPeriod
+)
 
 
 
@@ -55,6 +64,16 @@ data class Account(
 fun Double.toCurrency(): String = String.format("$%.2f",this)
 
 fun main() {
+ val account = Account("Wallet",1000.0)
+    val transaction = Transaction(
+        amount = 100.0,
+        description = "Food",
+        type = TransactionType.EXPENSE,
+        category = Category.FOOD
+    )
+    val fileManager = FileManager()
+    fileManager.saveAccount(account,"finance-tracker.json")
+    
 
 
 }

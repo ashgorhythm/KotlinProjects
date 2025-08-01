@@ -7,11 +7,11 @@ import java.io.File
 class FileManager {
     val json = Json {prettyPrint = true}
 
-    fun saveAccount(account: Account,filename: String){
+    fun saveAccount(account: List<Account>,filename: String){
         val jsonData = json.encodeToString(account)
         File(filename).writeText(jsonData)
     }
-    fun loadAccount(filename: String): Account? {
+    fun loadAccount(filename: String): List<Account>? {
         val file = File(filename)
         if (!file.exists()) return null
         val jsonData = file.readText()
@@ -22,6 +22,16 @@ class FileManager {
         File(filename).writeText(jsonData)
     }
     fun loadTransaction(filename: String): List<Transaction>?{
+        val file = File(filename)
+        if (!file.exists()) return null
+        val jsonData = file.readText()
+        return json.decodeFromString(jsonData)
+    }
+    fun saveBudget(budget: List<Budget>,filename: String){
+        val jsonData = json.encodeToString(budget)
+        File(filename).writeText(jsonData)
+    }
+    fun loadBudget(filename: String): List<Budget>? {
         val file = File(filename)
         if (!file.exists()) return null
         val jsonData = file.readText()
