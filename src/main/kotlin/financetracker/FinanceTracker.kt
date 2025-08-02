@@ -55,6 +55,12 @@ data class Budget(
     val limit: Double,
     val period: BudgetPeriod
 )
+@Serializable
+data class FinanceData(
+    val accounts: List<Account>,
+    val transactions: List<Transaction>,
+    val budgets: List<Budget>
+)
 
 
 
@@ -71,8 +77,7 @@ fun main() {
         type = TransactionType.EXPENSE,
         category = Category.FOOD
     )
-    val fileManager = FileManager()
-    fileManager.saveAccount(account,"finance-tracker.json")
+
     
 
 
