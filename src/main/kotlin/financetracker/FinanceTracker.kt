@@ -57,20 +57,31 @@ data class Budget(
 )
 @Serializable
 data class FinanceData(
-    var accounts: List<Account>,
-    var transactions: List<Transaction>,
+    var accounts: MutableList<Account>,
+    var transactions: MutableList<Transaction>,
     var budgets: List<Budget>
 )
 class FinanceTracker {
     var data: FinanceData = FinanceData(
-        accounts = listOf(),
-        transactions = listOf(),
+        accounts = mutableListOf(),
+        transactions = mutableListOf(),
         budgets = listOf()
     )
 
 
     fun addAccount(account: Account) {
-        data.accounts += account
+        data.accounts.add(account)
+    }
+    fun printAllAccount(){
+        if (data.accounts.isEmpty()) println("No Accounts are created.")
+        else{
+            println("Available Accounts:")
+            data.accounts.forEach { account ->
+                println(account.name)
+            }
+
+
+        }
     }
 
     fun addTransaction(transaction: Transaction, account: Account) {
@@ -80,91 +91,93 @@ class FinanceTracker {
             existingAccount.transactions.add(transaction)
         } else println("Account '${account.name}' doesn't exist...")
     }
-
-
-    fun setBudget(category: Category, limit: Double, period: BudgetPeriod) {
-        val updateBudget = Budget(category, limit, period)
-       data.budgets = data.budgets.filterNot { it.category == category } + updateBudget
+    fun setBudget(category: Category,limit: Double,period: BudgetPeriod){
+        val updateBudget = Budget(category,limit,period)
+        data.budgets = data.budgets.filter { it.category != category } + updateBudget
     }
-    fun generateCategoryReport(category: Category): Report.CategoryReport {
+    fun printAllBudget(){
+        if (data.budgets.isEmpty()) println("No Budgets")
+        else {
+            data.budgets.forEach { budget ->
+                println("Category:${budget.category} | Limit:${budget.limit.toCurrency()} | Period:${budget.period}")
+            }
+        }
+    }
+    fun generateCategoryReport(category: Category): Report.CategoryReport{
         val filtered = data.transactions.filter { it.category == category }
-        val income = filtered.filter { it.type == TransactionType.INCOME }.sumOf { it.amount }
-        val expense = filtered.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
-        return Report.CategoryReport(category, income, expense, income - expense)
+        val totalIncome = filtered.filter { it.type == TransactionType.INCOME }.sumOf { it.amount }
+        val totalExpense = filtered.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
+        return Report.CategoryReport(category,totalIncome,totalExpense,totalIncome-totalExpense)
     }
     fun generatePeriodReport(period: BudgetPeriod): Report.PeriodReport{
-        val (start, end) = getPeriodRange(period)
+        val end = LocalDate.now()
+        val start = when (period) {
+            BudgetPeriod.WEEKLY -> end.minusDays(6)
+            BudgetPeriod.MONTHLY -> end.withDayOfMonth(1)
+            BudgetPeriod.YEARLY -> end.withDayOfYear(1)
+        }
         val filtered = data.transactions.filter {
             val date = LocalDate.parse(it.date)
             date in start..end
         }
-        val income = filtered.filter { it.type== TransactionType.INCOME }.sumOf { it.amount }
-        val expense = filtered.filter { it.type== TransactionType.EXPENSE }.sumOf { it.amount }
-        return Report.PeriodReport(period,start.toString(),end.toString(),income,expense,income-expense)
+        val totalIncome = filtered.filter { it.type == TransactionType.INCOME }.sumOf { it.amount }
+        val totalExpense = filtered.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
+        return Report.PeriodReport(period,start.toString(),end.toString(),totalIncome,totalExpense,totalIncome-totalExpense)
     }
-    fun getPeriodRange(period: BudgetPeriod): Pair<LocalDate, LocalDate> {
-        val now = LocalDate.now()
-        return when (period) {
-            BudgetPeriod.WEEKLY -> now.minusDays(6) to now
-            BudgetPeriod.MONTHLY -> now.withDayOfMonth(1) to now
-            BudgetPeriod.YEARLY -> now.withDayOfYear(1) to now
-        }
-    }
-    fun generateGeneralReport(): Report.GeneralReport {
-        val income = data.transactions.filter { it.type == TransactionType.INCOME }.sumOf { it.amount }
-        val expense = data.transactions.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
+    fun generateReport(): Report.GeneralReport{
+        val totalIncome = data.transactions.filter { it.type== TransactionType.INCOME }.sumOf { it.amount }
+        val totalExpense = data.transactions.filter { it.type== TransactionType.EXPENSE }.sumOf { it.amount }
         val count = data.transactions.size
-        return Report.GeneralReport(income, expense, income - expense, count)
+        return Report.GeneralReport(totalIncome,totalExpense,totalIncome-totalExpense,count)
     }
-    fun printAccountSummary(accountName: String) {
-        val account = data.accounts.firstOrNull { it.name == accountName }
-
-        if (account == null) {
+    fun printAccountSummary(accountName: String){
+        val account = data.accounts.firstOrNull{it.name==accountName}
+        if (account==null) {
             println("Account \"$accountName\" not found.")
             return
         }
 
         println("📘 Account Summary for: ${account.name}")
-        println("💰 Current Balance: ${account.currentBalance.toCurrency()}")
+        println("Current Balance: ${account.currentBalance.toCurrency()}")
 
-        val recent = account.transactions.takeLast(5).reversed()
+        //val recent = account.transactions.takeLast(5).reversed()
+        val recent = mutableListOf<Transaction>()
+        val size = account.transactions.size
+        val start = maxOf(0,size-5)
+        for (i in size-1 downTo start){
+            recent.add(account.transactions[i])
+        }
         println("\n📄 Last 5 Transactions:")
-        if (recent.isEmpty()) {
-            println("No transactions yet.")
-        } else {
-            for ((i, tx) in recent.withIndex()) {
-                val sign = if (tx.type == TransactionType.INCOME) "+" else "-"
-                println("${i + 1}. ${tx.date} | ${tx.category} | $sign${tx.amount.toCurrency()} | ${tx.description}")
+        if (recent.isEmpty()){
+            println("No transactions you POOR :) ")
+        }
+        else {
+            for ((i,tx) in recent.withIndex()) {
+                val sign = if (tx.type== TransactionType.INCOME) "+" else "-"
+                println("${i+1}. ID:${tx.id.takeLast(5).uppercase()} ${tx.date} | ${tx.category} | $sign${tx.amount.toCurrency()} | ${tx.type}")
             }
         }
-
-        val incomeTotal = account.transactions
-            .filter { it.type == TransactionType.INCOME }
-            .sumOf { it.amount }
-
-        val expenseTotal = account.transactions
-            .filter { it.type == TransactionType.EXPENSE }
-            .sumOf { it.amount }
-
+        val incomeTotal = account.transactions.filter { it.type== TransactionType.INCOME }.sumOf { it.amount }
+        val expenseTotal = account.transactions.filter { it.type== TransactionType.EXPENSE }.sumOf { it.amount }
         println("\n📊 Totals:")
         println("➕ Total Income:  ${incomeTotal.toCurrency()}")
         println("➖ Total Expense: ${expenseTotal.toCurrency()}")
     }
 
-
 }
 
 
-
-
 //currency formatting
-
 
 fun Double.toCurrency(): String = String.format("৳%.2f",this)
 
 fun main() {
 
-    val tracker = FinanceTracker()
+
+}
+
+/*
+val tracker = FinanceTracker()
     val manager = FileManager()
     println("Enter Account Name:")
     val accName = readln()
@@ -179,7 +192,7 @@ fun main() {
     while (true) {
         println(
             """
-            
+
             ==== MENU ====
             1. Add Transaction
             2. View Account Summary
@@ -275,4 +288,4 @@ fun main() {
 
         }
     }
-}
+ */
