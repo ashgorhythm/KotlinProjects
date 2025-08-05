@@ -172,8 +172,14 @@ class FinanceTracker {
 fun Double.toCurrency(): String = String.format("৳%.2f",this)
 
 fun main() {
+    val file = FileManager()
+    val tracker = FinanceTracker()
+    val wallet = Account("wallet",1000.0)
 
 
+    tracker.addAccount(account = wallet)
+    println(wallet)
+    file.saveFinanceData()
 }
 
 /*
