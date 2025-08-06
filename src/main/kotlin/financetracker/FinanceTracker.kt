@@ -172,7 +172,17 @@ class FinanceTracker {
 fun Double.toCurrency(): String = String.format("৳%.2f",this)
 
 fun main() {
+ val manager = FileManager()
+    val tracker = FinanceTracker()
+    println("Load saved account: y/n ")
+    val input = readlnOrNull()
+    if (input != null){
+        when(input){
+            "y" -> manager.loadFinanceData("finance-tracker.json")
+            "n" -> println("Create new account: ")
 
+        }
+    }
 }
 
 /*
