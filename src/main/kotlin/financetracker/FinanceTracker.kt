@@ -207,15 +207,17 @@ fun main() {
     } else {
         tracker.data = loadedData
     }
+    println("Select a default account:")
+    tracker.printAllAccount()
+    val input = readlnOrNull()?.toIntOrNull()
+    if (input == null || input !in 1..tracker.data.accounts.size) {
+        println("Invalid account selection.")
+        return
+    }
+    var defaultAccount = tracker.data.accounts[input - 1]
+    println("✅ '${defaultAccount.name}' set as default account.")
     while (true) {
-        println("Select a default account:")
-        tracker.printAllAccount()
-        val input = readlnOrNull()?.toIntOrNull()
-        if (input == null || input !in 1..tracker.data.accounts.size) {
-            println("Invalid account selection.")
-            continue
-        }
-        val defaultAccount = tracker.data.accounts[input - 1]
+
         println(
             """
                 ==== MENU ====
@@ -228,6 +230,7 @@ fun main() {
             7. Save Data
             8. Load Data
             9. All Transactions
+            10.Change Default Account
             0. Exit
             
         """.trimIndent()
@@ -357,6 +360,17 @@ fun main() {
             }
             "9" -> {
                 tracker.showAllTransaction()
+            }
+            "10" -> {
+                println("Change default account:")
+                tracker.printAllAccount()
+                val newAccount = readln().toIntOrNull()
+                if (newAccount!=null && newAccount in 1..tracker.data.accounts.size){
+                    defaultAccount = tracker.data.accounts[newAccount-1]
+                    println("✅ Default account changed to ${defaultAccount.name}")
+                } else {
+                    println("❌ Invalid selection.")
+                }
             }
 
             "0" -> {

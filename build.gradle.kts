@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.2.0"
     kotlin("plugin.serialization") version "2.2.0"
+    application
 
 }
 group = "org.example"
@@ -14,6 +15,10 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }
+application {
+    mainClass.set("financetracker.FinanceTrackerKt") // ✅ Your main class with `main()`
+}
+
 
 
 tasks.test {

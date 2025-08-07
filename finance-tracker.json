@@ -10,6 +10,13 @@
                     "description": "khichuri",
                     "type": "EXPENSE",
                     "category": "FOOD"
+                },
+                {
+                    "id": "a086a21d-1bd0-46b7-8e09-632d65bafb54",
+                    "amount": 50.0,
+                    "description": "cha",
+                    "type": "EXPENSE",
+                    "category": "FOOD"
                 }
             ]
         }
@@ -21,6 +28,13 @@
             "description": "khichuri",
             "type": "EXPENSE",
             "category": "FOOD"
+        },
+        {
+            "id": "a086a21d-1bd0-46b7-8e09-632d65bafb54",
+            "amount": 50.0,
+            "description": "cha",
+            "type": "EXPENSE",
+            "category": "FOOD"
         }
     ],
     "budgets": [
@@ -28,6 +42,11 @@
             "category": "FOOD",
             "limit": 500.0,
             "period": "WEEKLY"
+        },
+        {
+            "category": "TRAVEL",
+            "limit": 500.0,
+            "period": "MONTHLY"
         }
     ]
 }
