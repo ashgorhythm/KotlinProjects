@@ -1,0 +1,33 @@
+{
+    "accounts": [
+        {
+            "name": "wallet",
+            "initialBalance": 1000.0,
+            "transactions": [
+                {
+                    "id": "ddfa8bea-e54e-4b53-b15c-ff8438f0460a",
+                    "amount": 150.0,
+                    "description": "khichuri",
+                    "type": "EXPENSE",
+                    "category": "FOOD"
+                }
+            ]
+        }
+    ],
+    "transactions": [
+        {
+            "id": "ddfa8bea-e54e-4b53-b15c-ff8438f0460a",
+            "amount": 150.0,
+            "description": "khichuri",
+            "type": "EXPENSE",
+            "category": "FOOD"
+        }
+    ],
+    "budgets": [
+        {
+            "category": "FOOD",
+            "limit": 500.0,
+            "period": "WEEKLY"
+        }
+    ]
+}
