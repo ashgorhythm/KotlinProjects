@@ -231,6 +231,7 @@ fun main() {
             8. Load Data
             9. All Transactions
             10.Change Default Account
+            11. Add Another Account
             0. Exit
             
         """.trimIndent()
@@ -371,6 +372,15 @@ fun main() {
                 } else {
                     println("❌ Invalid selection.")
                 }
+            }
+            "11" -> {
+                println("Enter new account name:")
+                val newName = readln()
+                println("Enter account balance:")
+                val newBalance = readln().toDouble()
+                val newAccount = Account(newName,newBalance)
+                tracker.addAccount(newAccount)
+                println("$newName added with balance ${newBalance.toCurrency()}")
             }
 
             "0" -> {

@@ -19,6 +19,19 @@
                     "category": "FOOD"
                 }
             ]
+        },
+        {
+            "name": "bank",
+            "initialBalance": 1000.0,
+            "transactions": [
+                {
+                    "id": "61e84230-d02d-445a-94de-50022a8e29a6",
+                    "amount": 150.0,
+                    "description": "debt",
+                    "type": "EXPENSE",
+                    "category": "OTHERS"
+                }
+            ]
         }
     ],
     "transactions": [
@@ -35,6 +48,13 @@
             "description": "cha",
             "type": "EXPENSE",
             "category": "FOOD"
+        },
+        {
+            "id": "61e84230-d02d-445a-94de-50022a8e29a6",
+            "amount": 150.0,
+            "description": "debt",
+            "type": "EXPENSE",
+            "category": "OTHERS"
         }
     ],
     "budgets": [
