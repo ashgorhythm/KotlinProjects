@@ -17,6 +17,20 @@
                     "description": "cha",
                     "type": "EXPENSE",
                     "category": "FOOD"
+                },
+                {
+                    "id": "ebd4eb1e-d7b8-4881-a27f-699973c6c027",
+                    "amount": 2000.0,
+                    "description": "allowance",
+                    "type": "INCOME",
+                    "category": "OTHERS"
+                },
+                {
+                    "id": "b4da397f-9001-4b05-83c1-5826bfd47add",
+                    "amount": 950.0,
+                    "description": "prac",
+                    "type": "EXPENSE",
+                    "category": "OTHERS"
                 }
             ]
         },
@@ -53,6 +67,20 @@
             "id": "61e84230-d02d-445a-94de-50022a8e29a6",
             "amount": 150.0,
             "description": "debt",
+            "type": "EXPENSE",
+            "category": "OTHERS"
+        },
+        {
+            "id": "ebd4eb1e-d7b8-4881-a27f-699973c6c027",
+            "amount": 2000.0,
+            "description": "allowance",
+            "type": "INCOME",
+            "category": "OTHERS"
+        },
+        {
+            "id": "b4da397f-9001-4b05-83c1-5826bfd47add",
+            "amount": 950.0,
+            "description": "prac",
             "type": "EXPENSE",
             "category": "OTHERS"
         }
