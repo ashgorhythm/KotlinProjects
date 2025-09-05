@@ -12,11 +12,10 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 }
 application {
-    mainClass.set("financetracker.FinanceTrackerKt") // ✅ Your main class with `main()`
+    mainClass.set("weather/WeatherAPI.kt")
 }
 
 
