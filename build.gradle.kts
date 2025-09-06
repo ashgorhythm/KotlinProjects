@@ -13,9 +13,10 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 }
 application {
-    mainClass.set("weather/WeatherAPI.kt")
+
 }
 
 
